@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sistema</title>
+  <link rel="stylesheet" type="text/css" href="style/styles.css">
+  <link rel="shortcut icon" href="style/img/favicon.png" type="image/x-icon">
+</head>
+<body>
+
+<div class="movel">
+  <h1>Cadastrar Usuário</h1>
+
+  <div id="formulario" class="box1">
+    <fieldset>
+      <legend>Dados</legend>
+      <input type="text" id="nome" class="inputUser" placeholder="Nome" pattern="[^0-9]*" oninput="validarNome(event)">
+      <input type="number" id="numtel" class="inputUser" placeholder="Número de Telefone">
+      <input type="number" id="salario" class="inputUser" placeholder="Salário">
+      <br><br>
+      <label for="data_nascimento"><b>Data de Nascimento:</b></label>
+      <input type="date" id="dataNascimento" class="inputUser">
+      <div class="coee">
+        <button type="button" class="button" onclick="adicionarUsuario()">Adicionar</button>
+        <button type="button" class="button" onclick="atualizarUsuario()">Atualizar</button>
+      </div>
+    </fieldset>
+  </div>
+
+  <div id="pesquisa" class="box1">
+    <fieldset>
+      <legend>Pesquisar Usuário</legend>
+      <input type="text" id="inputPesquisa" class="inputUser" placeholder="Digite o nome do usuário">
+      <button type="button" class="button" onclick="pesquisarUsuario()">Pesquisar</button>
+    </fieldset>
+  </div>
+
+  <div id="tabela" class="box">
+    <fieldset>
+      <legend>Pessoas</legend>
+      <table id="pessoas">
+        <thead>
+          <tr>
+            <th>Telefone</th>
+            <th>Nome</th>
+            <th>Data de Nascimento</th>
+            <th>Salário</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="pessoasBody">
+          <!-- Os registros serão adicionados dinamicamente aqui -->
+        </tbody>
+      </table>
+    </fieldset>
+  </div>
+  
+</div>
+
+  <script src="script/script.js"></script>
+</body>
+</html>
