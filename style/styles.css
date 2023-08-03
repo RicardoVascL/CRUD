@@ -1,6 +1,7 @@
-body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
   background-image: url(img/bg.jpg);
   background-repeat: no-repeat;
   background-size: cover;
@@ -12,9 +13,13 @@ h1 {
 }
 
 .movel {
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center; /* Adicionamos esta propriedade para centralizar verticalmente */
+  font-family: Arial, sans-serif;
+  padding: 20px;
 }
 
 #pesquisa {
@@ -95,8 +100,6 @@ button {
   background-color: rgba(0, 0, 0, 0.7);
   padding: 15px;
   border-radius: 15px;
-  width: 80%;
-  margin: auto;
 }
 
 fieldset {
@@ -204,9 +207,12 @@ input[type="number"]::-webkit-outer-spin-button {
     display: flex;
     flex-direction: column;
     align-items: center;
+    
   }
+
+  
   .box {
-    width: 60%;
+    width: 90%;
   }
 
   #formulario .inputUser,
