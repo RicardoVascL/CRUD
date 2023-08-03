@@ -100,6 +100,7 @@ button {
   background-color: rgba(0, 0, 0, 0.7);
   padding: 15px;
   border-radius: 15px;
+  width: 90%;
 }
 
 fieldset {
@@ -208,11 +209,6 @@ input[type="number"]::-webkit-outer-spin-button {
     flex-direction: column;
     align-items: center;
     
-  }
-
-  
-  .box {
-    width: 90%;
   }
 
   #formulario .inputUser,
