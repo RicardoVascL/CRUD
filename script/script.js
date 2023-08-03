@@ -38,7 +38,7 @@ function adicionarUsuario() {
           nome: nome,
           numtel: numtel, // Adiciona o telefone ao objeto do usuário
           dataNascimento: dataNascimento,
-          salario: salario,
+          salario: parseFloat(salario.replace(',', '.')),
       };
 
       usuarios.push(novoUsuario);
@@ -59,13 +59,31 @@ function atualizarTabela() {
       <td>${usuario.numtel}</td>
       <td>${usuario.nome}</td>
       <td>${usuario.dataNascimento}</td>
-      <td>${usuario.salario}</td>
+      <td>${formatarMoeda(usuario.salario)}</td>
       <td>
         <button data-id="${usuario.chave}" class="btnEditar" onclick="editarUsuario(event)">Editar</button>
         <button data-id="${usuario.chave}" class="btnExcluir" onclick="excluirUsuario(event)">Excluir</button>
       </td>
     `;
   });
+}
+
+function formatarMoedaSemSimbolo(valor) {
+  // Verifica se o valor já está formatado corretamente como um número
+  if (typeof valor === 'number') {
+    // Converte o valor para uma string e remove apenas os caracteres indesejados (ponto de milhar e vírgula)
+    const valorFormatado = valor.toString().replace(/[\.,]/g, '');
+    // Chama a função formatarMoeda para formatar corretamente como monetário
+    return formatarMoeda(parseFloat(valorFormatado));
+  } else {
+    // Se o valor já for uma string formatada, retorna diretamente
+    return valor;
+  }
+}
+
+// Função para formatar o valor como monetário (R$)
+function formatarMoeda(valor) {
+  return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
 // Função para limpar os campos do formulário após adicionar um usuário
@@ -102,7 +120,7 @@ function atualizarTabelaComResultados(resultados) {
   resultados.forEach((usuario) => {
     const newRow = tabelaBody.insertRow();
     newRow.innerHTML = `
-      <td>${usuario.chave}</td>
+      <td>${usuario.numtel}</td>
       <td>${usuario.nome}</td>
       <td>${usuario.dataNascimento}</td>
       <td>${usuario.salario}</td>
@@ -131,7 +149,7 @@ function editarUsuario(event) {
     nomeInput.value = usuarioSelecionado.nome;
     numtelInput.value = usuarioSelecionado.numtel;
     dataNascimentoInput.value = usuarioSelecionado.dataNascimento;
-    salarioInput.value = usuarioSelecionado.salario;
+    salarioInput.value = formatarMoeda(usuarioSelecionado.salario); // Formata o valor do salário como monetário
   } else {
     alert("Usuário não encontrado.");
   }
@@ -143,7 +161,7 @@ function atualizarUsuario() {
     const nome = nomeInput.value;
     const numtel = parseInt(numtelInput.value);
     const dataNascimento = dataNascimentoInput.value;
-    const salario = salarioInput.value;
+    const salario = parseFloat(salarioInput.value.replace(',', '.')); // Converte o valor em Reais para um número
 
     if (nome && numtel && dataNascimento && salario) {
       // Atualiza os dados do usuário selecionado
