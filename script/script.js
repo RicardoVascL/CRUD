@@ -5,7 +5,7 @@ let idContador = 1; // Contador para gerar IDs únicos
 
 // Referências aos elementos do DOM
 const nomeInput = document.getElementById("nome");
-const numtelInput = document.getElementById("numtel"); // Correção do nome da variável
+const numtelInput = document.getElementById("numtel");
 const dataNascimentoInput = document.getElementById("dataNascimento");
 const salarioInput = document.getElementById("salario");
 const tabelaBody = document.getElementById("pessoasBody");
@@ -49,44 +49,12 @@ function adicionarUsuario() {
   }
 }
 
-// Função para atualizar a tabela com os usuários
-function atualizarTabela() {
-  tabelaBody.innerHTML = "";
-
-  usuarios.forEach((usuario) => {
-    const newRow = tabelaBody.insertRow();
-    newRow.innerHTML = `
-      <td>${usuario.numtel}</td>
-      <td>${usuario.nome}</td>
-      <td>${usuario.dataNascimento}</td>
-      <td>${formatarMoeda(usuario.salario)}</td>
-      <td>
-        <button data-id="${usuario.chave}" class="btnEditar" onclick="editarUsuario(event)">Editar</button>
-        <button data-id="${usuario.chave}" class="btnExcluir" onclick="excluirUsuario(event)">Excluir</button>
-      </td>
-    `;
-  });
+function validarNome(event) {
+  const input = event.target;
+  const newValue = input.value.replace(/[0-9]/g, '');
+  input.value = newValue;
 }
 
-function formatarMoedaSemSimbolo(valor) {
-  // Verifica se o valor já está formatado corretamente como um número
-  if (typeof valor === 'number') {
-    // Converte o valor para uma string e remove apenas os caracteres indesejados (ponto de milhar e vírgula)
-    const valorFormatado = valor.toString().replace(/[\.,]/g, '');
-    // Chama a função formatarMoeda para formatar corretamente como monetário
-    return formatarMoeda(parseFloat(valorFormatado));
-  } else {
-    // Se o valor já for uma string formatada, retorna diretamente
-    return valor;
-  }
-}
-
-// Função para formatar o valor como monetário (R$)
-function formatarMoeda(valor) {
-  return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-}
-
-// Função para limpar os campos do formulário após adicionar um usuário
 function limparCampos() {
   nomeInput.value = "";
   numtelInput.value = ""; // Correção do nome da variável
@@ -94,52 +62,6 @@ function limparCampos() {
   salarioInput.value = "";
 }
 
-function pesquisarUsuario() {
-  const searchTerm = inputPesquisa.value.toLowerCase();
-
-  if (searchTerm.trim() === "") {
-    // Se o campo de pesquisa estiver vazio, mostra todos os registros
-    atualizarTabela();
-  } else {
-    // Caso contrário, faz a pesquisa normalmente
-    const resultados = usuarios.filter((usuario) => {
-      const nomeLowerCase = usuario.nome.toLowerCase();
-      const chaveLowerCase = usuario.chave.toString().toLowerCase();
-
-      return nomeLowerCase.includes(searchTerm) || chaveLowerCase.includes(searchTerm);
-    });
-
-    atualizarTabelaComResultados(resultados);
-  }
-}
-
-// Função para atualizar a tabela com os resultados da pesquisa
-function atualizarTabelaComResultados(resultados) {
-  tabelaBody.innerHTML = "";
-
-  resultados.forEach((usuario) => {
-    const newRow = tabelaBody.insertRow();
-    newRow.innerHTML = `
-      <td>${usuario.numtel}</td>
-      <td>${usuario.nome}</td>
-      <td>${usuario.dataNascimento}</td>
-      <td>${usuario.salario}</td>
-      <td>
-        <button data-id="${usuario.chave}" class="btnEditar" onclick="editarUsuario(event)">Editar</button>
-        <button data-id="${usuario.chave}" class="btnExcluir" onclick="excluirUsuario(event)">Excluir</button>
-      </td>
-    `;
-  });
-}
-
-// Função para excluir um usuário
-function excluirUsuario(event) {
-  const chave = parseInt(event.target.dataset.id);
-  usuarios = usuarios.filter((usuario) => usuario.chave !== chave);
-  atualizarTabela();
-}
-
-// Função para selecionar um usuário para edição
 function editarUsuario(event) {
   const chave = parseInt(event.target.dataset.id);
   usuarioSelecionado = usuarios.find((usuario) => usuario.chave === chave);
@@ -149,13 +71,12 @@ function editarUsuario(event) {
     nomeInput.value = usuarioSelecionado.nome;
     numtelInput.value = usuarioSelecionado.numtel;
     dataNascimentoInput.value = usuarioSelecionado.dataNascimento;
-    salarioInput.value = formatarMoeda(usuarioSelecionado.salario); // Formata o valor do salário como monetário
+    salarioInput.value = usuarioSelecionado.salario; // Atribui o valor do salário diretamente ao campo de input, sem formatação monetária
   } else {
     alert("Usuário não encontrado.");
   }
 }
 
-// Função para atualizar o usuário selecionado
 function atualizarUsuario() {
   if (usuarioSelecionado) {
     const nome = nomeInput.value;
@@ -181,16 +102,95 @@ function atualizarUsuario() {
   }
 }
 
+function atualizarTabela() {
+  tabelaBody.innerHTML = "";
+
+  usuarios.forEach((usuario) => {
+    const newRow = tabelaBody.insertRow();
+    newRow.innerHTML = `
+      <td>${usuario.numtel}</td>
+      <td>${usuario.nome}</td>
+      <td>${formatarData(usuario.dataNascimento)}</td> <!-- Formata a data -->
+      <td>${formatarMoeda(usuario.salario)}</td>
+      <td>
+        <button data-id="${usuario.chave}" class="btnEditar" onclick="editarUsuario(event)">Editar</button>
+        <button data-id="${usuario.chave}" class="btnExcluir" onclick="excluirUsuario(event)">Excluir</button>
+      </td>
+    `;
+  });
+}
+
+function pesquisarUsuario() {
+  const searchTerm = inputPesquisa.value.toLowerCase();
+
+  if (searchTerm.trim() === "") {
+    // Se o campo de pesquisa estiver vazio, mostra todos os registros
+    atualizarTabela();
+  } else {
+    // Caso contrário, faz a pesquisa normalmente
+    const resultados = usuarios.filter((usuario) => {
+      const nomeLowerCase = usuario.nome.toLowerCase();
+      const chaveLowerCase = usuario.chave.toString().toLowerCase();
+
+      return nomeLowerCase.includes(searchTerm) || chaveLowerCase.includes(searchTerm);
+    });
+
+    atualizarTabelaComResultados(resultados);
+  }
+}
+
+function atualizarTabelaComResultados(resultados) {
+  tabelaBody.innerHTML = "";
+
+  resultados.forEach((usuario) => {
+    const newRow = tabelaBody.insertRow();
+    newRow.innerHTML = `
+      <td>${usuario.numtel}</td>
+      <td>${usuario.nome}</td>
+      <td>${usuario.dataNascimento}</td>
+      <td>${usuario.salario}</td>
+      <td>
+        <button data-id="${usuario.chave}" class="btnEditar" onclick="editarUsuario(event)">Editar</button>
+        <button data-id="${usuario.chave}" class="btnExcluir" onclick="excluirUsuario(event)">Excluir</button>
+      </td>
+    `;
+  });
+}
+
+function excluirUsuario(event) {
+  const chave = parseInt(event.target.dataset.id);
+  usuarios = usuarios.filter((usuario) => usuario.chave !== chave);
+  atualizarTabela();
+}
+
+function formatarData(data) {
+  const dataObj = new Date(data);
+  const dia = String(dataObj.getDate()).padStart(2, '0');
+  const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+  const ano = dataObj.getFullYear();
+  return `${dia}/${mes}/${ano}`;
+}
+
+function formatarMoeda(valor) {
+  return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
+function formatarMoedaSemSimbolo(valor) {
+  // Verifica se o valor já está formatado corretamente como um número
+  if (typeof valor === 'number') {
+    // Converte o valor para uma string e remove apenas os caracteres indesejados (ponto de milhar e vírgula)
+    const valorFormatado = valor.toString().replace(/[\.,]/g, '');
+    // Chama a função formatarMoeda para formatar corretamente como monetário
+    return formatarMoeda(parseFloat(valorFormatado));
+  } else {
+    // Se o valor já for uma string formatada, retorna diretamente
+    return valor;
+  }
+}
+
 document.getElementById("pesquisa").addEventListener("submit", function (event) {
   event.preventDefault();
   pesquisarUsuario();
 });
 
-function validarNome(event) {
-  const input = event.target;
-  const newValue = input.value.replace(/[0-9]/g, '');
-  input.value = newValue;
-}
-
-// Inicializa a tabela com os usuários
 atualizarTabela();

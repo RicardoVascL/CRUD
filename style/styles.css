@@ -79,7 +79,17 @@ html, body {
 
 .inputUser,
 button {
-  margin-top: 10px;
+  background-color: #4e54c8;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.inputUser,
+button:hover {
+  background-color: #3d438f;
+  transition: background-color 0.3s;
 }
 
 .box1 {
@@ -161,6 +171,7 @@ legend {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-top: 10px;
 }
 
 .button:hover {
@@ -174,10 +185,10 @@ table {
 }
 
 th,
-td {
-  padding: 8px;
+td, tr {
+  padding: 6px;
   border-bottom: 1px solid #f2f2f2;
-  text-align: left;
+  text-align: center;
 }
 
 th {
