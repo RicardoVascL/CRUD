@@ -213,13 +213,6 @@ input[type="number"]::-webkit-outer-spin-button {
     justify-content: flex-start;
   }
 
-  #formulario .inputUser,
-  #formulario .button,
-  #pesquisa .inputUser,
-  #pesquisa .button {
-    max-width: 100%;
-  }
-
   #formulario .button,
   #pesquisa .button {
     padding: 10px 5px;
